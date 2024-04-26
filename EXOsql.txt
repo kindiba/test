@@ -1,0 +1,67 @@
+Création des tables :
+
+Livres : contient les informations sur les livres, avec les colonnes ISBN, Titre, Auteur.
+Membres : stocke les détails des membres, avec les colonnes Numéro de membre, Nom, Prénom, INE, Filière, Classe, Date de naissance.
+Emprunts : enregistre les emprunts de livres, avec les colonnes ID d'emprunt, ID de membre, ISBN, Date d'emprunt, Date de retour prévue, Date de retour effective.
+Réservations : conserve les réservations de livres, avec les colonnes ID de réservation, ID de membre, ISBN, Date de réservation.
+Utilisateurs : gère les informations d’authentification, avec les colonnes Nom d'utilisateur, Mot de passe.
+
+
+-- Création de la base de données
+CREATE DATABASE Bibliotheque;
+
+
+-- Création de la table Livres
+CREATE TABLE Livres (
+    ISBN INT PRIMARY KEY,
+    Titre VARCHAR(255),
+    Auteur VARCHAR(255)
+);
+
+-- Création de la table Membres
+CREATE TABLE Membres (
+    NumeroMembre INT PRIMARY KEY,
+    Nom VARCHAR(255),
+    Prenom VARCHAR(255),
+    INE VARCHAR(20),
+    Filiere VARCHAR(255),
+    Classe VARCHAR(255),
+    DateNaissance DATE
+);
+
+-- Création de la table Emprunts
+CREATE TABLE Emprunts (
+    ID_Emprunt INT PRIMARY KEY,
+    NumeroMembre INT,
+    ISBN INT,
+    DateEmprunt DATE,
+    DateRetourPrevue DATE,
+    DateRetourEffective DATE,
+    FOREIGN KEY (NumeroMembre) REFERENCES Membres(NumeroMembre),
+    FOREIGN KEY (ISBN) REFERENCES Livres(ISBN)
+);
+
+-- Création de la table Reservations
+CREATE TABLE Reservations (
+    ID_Reservation INT PRIMARY KEY,
+    NumeroMembre INT,
+    ISBN INT,
+    DateReservation DATE,
+    FOREIGN KEY (NumeroMembre) REFERENCES Membres(NumeroMembre),
+    FOREIGN KEY (ISBN) REFERENCES Livres(ISBN)
+);
+
+-- Création de la table Utilisateurs
+CREATE TABLE Utilisateurs (
+    ID_Utilisateur INT PRIMARY KEY,
+    NomUtilisateur VARCHAR(50),
+    MotDePasse VARCHAR(50)
+);
+
+
+
+
+SELECT Livres.*
+FROM Livres
+JOIN Emprunts ON Livres.ISBN = Emprunts.ISBN
+WHERE Emprunts.NumeroMembre = 1;
